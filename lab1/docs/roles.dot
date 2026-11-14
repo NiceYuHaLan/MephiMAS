@@ -1,0 +1,36 @@
+digraph Roles {
+    graph [rankdir=LR, bgcolor="white", fontname="Liberation Sans", fontsize=14, pad=0.3, nodesep=0.35, ranksep=0.7];
+    node [fontname="Liberation Sans", fontsize=12, shape=box, style="rounded,filled", color="#5b4636", penwidth=1.4];
+    edge [fontname="Liberation Sans", fontsize=10, color="#5b4636", fontcolor="#3d2f25"];
+
+    env [label="Среда: кухня «Красти Крабс»\nзаказы · станции · ингредиенты · время", shape=ellipse, fillcolor="#fff2b3", color="#b8860b"];
+
+    subgraph cluster_mas {
+        label="Многоагентная система";
+        fontsize=15;
+        style="rounded,dashed";
+        color="#2f7f7f";
+        fillcolor="#f4fbf9";
+
+        krabs [label="Mr. Krabs\nдиспетчер / владелец\n(BDI-lite)", fillcolor="#ffd166"];
+        squidward [label="Squidward\nкассир / фронт\n(BDI-lite)", fillcolor="#9ad1d4"];
+        spongebob [label="SpongeBob\nповар-универсал\n(реактивный)", fillcolor="#ffe066"];
+        patrick [label="Patrick\nвторой повар\n(реактивный)", fillcolor="#ffc6a8"];
+        sandy [label="Sandy\nтехник\n(реактивный)", fillcolor="#c7b9ff"];
+    }
+
+    plankton [label="Plankton\nвнешний агент\n(ограниченный доступ)", shape=box, style="rounded,dashed", fillcolor="#ffd6d6", color="#b00020", fontcolor="#7a0016"];
+
+    squidward -> krabs [label="поток заказов"];
+    krabs -> spongebob [label="назначение задач"];
+    krabs -> patrick [label="назначение задач"];
+    krabs -> sandy [label="заявки на ремонт"];
+
+    spongebob -> env [label="станции, ингредиенты", style=dashed, color="#7f8c8d"];
+    patrick -> env [label="станции, ингредиенты", style=dashed, color="#7f8c8d"];
+    sandy -> env [label="ремонт оборудования", style=dashed, color="#7f8c8d"];
+    krabs -> env [label="бюджет, арбитраж", style=dashed, color="#7f8c8d"];
+    squidward -> env [label="приём заказа", style=dashed, color="#7f8c8d"];
+
+    plankton -> krabs [label="внешние запросы", style=dashed, color="#b00020", fontcolor="#7a0016"];
+}

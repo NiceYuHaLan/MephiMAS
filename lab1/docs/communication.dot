@@ -1,0 +1,39 @@
+digraph Communication {
+    graph [rankdir=LR, bgcolor="white", fontname="Liberation Sans", fontsize=13, pad=0.3, nodesep=0.3, ranksep=0.8];
+    node [fontname="Liberation Sans", fontsize=12, shape=box, style="rounded,filled", color="#5b4636", penwidth=1.4];
+    edge [fontname="Liberation Sans", fontsize=9, color="#4a5a6a", fontcolor="#24313d"];
+
+    env [label="Среда\n(кухня)", shape=ellipse, fillcolor="#fff2b3", color="#b8860b"];
+    krabs [label="Mr. Krabs\nдиспетчер", fillcolor="#ffd166"];
+    squidward [label="Squidward\nфронт", fillcolor="#9ad1d4"];
+    spongebob [label="SpongeBob\nповар", fillcolor="#ffe066"];
+    patrick [label="Patrick\nповар", fillcolor="#ffc6a8"];
+    sandy [label="Sandy\nтехник", fillcolor="#c7b9ff"];
+    plankton [label="Plankton\nвнешний агент", shape=box, style="rounded,dashed", fillcolor="#ffd6d6", color="#b00020", fontcolor="#7a0016"];
+
+    squidward -> krabs [label="INFORM order_new"];
+    krabs -> squidward [label="INFORM serve_order"];
+    squidward -> krabs [label="INFORM served", style=dashed];
+
+    krabs -> spongebob [label="REQUEST cook_order"];
+    krabs -> patrick [label="REQUEST cook_order"];
+    spongebob -> krabs [label="AGREE / REFUSE"];
+    patrick -> krabs [label="AGREE / REFUSE"];
+
+    spongebob -> krabs [label="REQUEST station\nINFORM step_done\nINFORM station_released\nINFORM order_complete", color="#2f7f7f"];
+    patrick -> krabs [label="REQUEST station\nINFORM step_done\nINFORM station_released\nINFORM order_complete", color="#2f7f7f"];
+    krabs -> spongebob [label="AGREE station_granted", color="#2f7f7f"];
+    krabs -> patrick [label="AGREE station_granted", color="#2f7f7f"];
+
+    env -> krabs [label="INFORM station_broken", style=dashed, color="#b8860b"];
+    krabs -> sandy [label="REQUEST repair"];
+    sandy -> krabs [label="AGREE / REFUSE\nINFORM repair_done"];
+
+    plankton -> krabs [label="REQUEST внешний запрос", style=dashed, color="#b00020", fontcolor="#7a0016"];
+    krabs -> plankton [label="AGREE / REFUSE\nпроверка прав", style=dashed, color="#b00020", fontcolor="#7a0016"];
+
+    spongebob -> env [label="begin_task / finish_task", style=dotted, color="#7f8c8d"];
+    patrick -> env [label="begin_task / finish_task", style=dotted, color="#7f8c8d"];
+    sandy -> env [label="repair_station", style=dotted, color="#7f8c8d"];
+    krabs -> env [label="бюджет, доход", style=dotted, color="#7f8c8d"];
+}
