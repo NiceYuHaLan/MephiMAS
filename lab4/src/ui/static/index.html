@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Кухня Красти Крабс — МАС</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <div class="logo">KK</div>
+      <div>
+        <h1>Кухня Красти Крабс</h1>
+        <p class="subtitle">Многоагентная симуляция ресторана</p>
+      </div>
+    </div>
+    <div class="controls">
+      <label class="field">
+        <span>Сценарий</span>
+        <select id="scenario"></select>
+      </label>
+      <label class="field">
+        <span>Механизм</span>
+        <select id="mechanism"></select>
+      </label>
+      <label class="field">
+        <span>Конфликт</span>
+        <select id="conflict"></select>
+      </label>
+      <label class="field">
+        <span>Атака</span>
+        <select id="attack"><option value="">нет</option></select>
+      </label>
+      <label class="field toggle">
+        <span>Защита</span>
+        <input id="defense" type="checkbox">
+      </label>
+      <button id="btn-auto" class="primary">Запустить</button>
+      <button id="btn-step">Шаг</button>
+      <button id="btn-reset" class="ghost">Сброс</button>
+      <label class="field speed">
+        <span>Скорость: <b id="speed-label">0.6 с</b></span>
+        <input id="speed" type="range" min="100" max="2000" step="100" value="600">
+      </label>
+    </div>
+  </header>
+
+  <main>
+    <section class="statusline">
+      <span id="run-status" class="pill">ожидание</span>
+      <span id="scenario-title" class="scenario-title"></span>
+      <span id="mechanism-badge" class="pill ghost-pill"></span>
+      <span id="conflict-badge" class="pill ghost-pill"></span>
+      <span id="security-badge" class="pill ghost-pill"></span>
+      <span id="scenario-desc" class="scenario-desc"></span>
+    </section>
+
+    <section class="stats" id="stats">
+      <article class="stat"><span class="stat-label">Тик</span><b id="stat-tick">0</b><small id="stat-limit"></small></article>
+      <article class="stat"><span class="stat-label">Подано</span><b id="stat-served">0/0</b><small>заказов</small></article>
+      <article class="stat"><span class="stat-label">Сообщения</span><b id="stat-messages">0</b><small id="stat-coord">протокол 0</small></article>
+      <article class="stat"><span class="stat-label">Выручка</span><b id="stat-revenue">0</b><small id="stat-tips">чаевые 0</small></article>
+      <article class="stat"><span class="stat-label">Ср. ожидание</span><b id="stat-wait">0</b><small>тиков</small></article>
+      <article class="stat"><span class="stat-label">Makespan</span><b id="stat-makespan">0</b><small>тиков</small></article>
+      <article class="stat"><span class="stat-label">Назначение</span><b id="stat-latency">0</b><small>тиков, ср.</small></article>
+      <article class="stat"><span class="stat-label">Gini / Jain</span><b id="stat-gini">0 / 0</b><small id="stat-spend">платежи 0</small></article>
+      <article class="stat"><span class="stat-label">Конфликты</span><b id="stat-conflicts">0</b><small id="stat-conflict-detail">переговоры 0</small></article>
+      <article class="stat"><span class="stat-label">Надёжность</span><b id="stat-integrity">1</b><small id="stat-security-detail">отказов 0 · блок 0</small></article>
+    </section>
+
+    <section class="layout">
+      <article class="panel scene-panel">
+        <div class="scene-head">
+          <h2>Ресторан</h2>
+          <div class="scene-legend" aria-hidden="true">
+            <span><i class="legend-dot agent"></i>агенты</span>
+            <span><i class="legend-dot visitor"></i>посетители</span>
+            <span><i class="legend-dot station"></i>станции</span>
+          </div>
+          <span class="scene-hint">Позиции меняются по состояниям агентов</span>
+        </div>
+        <div id="scene" class="scene" aria-label="Схема ресторана с агентами и посетителями">
+          <div class="scene-zone dining-zone"><span class="zone-label">Зал</span></div>
+          <div class="scene-zone kitchen-zone"><span class="zone-label">Кухня</span></div>
+          <div class="scene-zone counter-zone"><span class="zone-label">Касса</span></div>
+          <div class="scene-zone entrance-zone"><span class="zone-label">Вход</span></div>
+
+          <div id="tables" class="tables"></div>
+
+          <div class="station-unit" data-station="grill-1" style="left: 68%; top: 20%">
+            <span class="station-model grill"><i></i><i></i><i></i></span>
+            <span class="station-label">Гриль</span>
+            <span class="station-status">свободна</span>
+          </div>
+          <div class="station-unit" data-station="fryer-1" style="left: 78%; top: 20%">
+            <span class="station-model fryer"><i></i></span>
+            <span class="station-label">Фритюр</span>
+            <span class="station-status">свободна</span>
+          </div>
+          <div class="station-unit" data-station="soda-1" style="left: 88%; top: 20%">
+            <span class="station-model soda"><i></i><i></i></span>
+            <span class="station-label">Газировка</span>
+            <span class="station-status">свободна</span>
+          </div>
+          <div class="station-unit" data-station="assembly-1" style="left: 78%; top: 36%">
+            <span class="station-model assembly"><i></i></span>
+            <span class="station-label">Сборка</span>
+            <span class="station-status">свободна</span>
+          </div>
+
+          <div class="scene-marker pass-marker" style="left: 66%; top: 48%">Выдача</div>
+          <div class="scene-marker dispatch-marker" style="left: 88%; top: 44%">Диспетчер</div>
+          <div class="scene-marker office-marker" style="left: 90%; top: 60%">Кабинет</div>
+          <div class="scene-marker workshop-marker" style="left: 91%; top: 74%">Мастерская</div>
+          <div class="scene-marker window-marker" style="left: 96%; top: 8%">Окно</div>
+
+          <div id="scene-actors" class="scene-actors"></div>
+        </div>
+      </article>
+
+      <article class="panel orders">
+        <h2>Заказы</h2>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>№</th><th>Клиент</th><th>Блюда</th><th>Статус</th><th>Повар</th><th>Ожидание</th></tr>
+            </thead>
+            <tbody id="orders-body"></tbody>
+          </table>
+        </div>
+      </article>
+
+      <article class="panel stations-panel">
+        <h2>Станции</h2>
+        <div id="stations" class="cards"></div>
+      </article>
+
+      <article class="panel agents-panel">
+        <h2>Агенты</h2>
+        <div id="agents" class="cards"></div>
+      </article>
+
+      <article class="panel inventory-panel">
+        <h2>Инвентарь</h2>
+        <div id="inventory" class="chips"></div>
+      </article>
+
+      <article class="panel messages-panel">
+        <h2>Обмен сообщениями</h2>
+        <div id="messages" class="messages"></div>
+      </article>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>

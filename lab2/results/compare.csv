@@ -1,0 +1,13 @@
+scenario,mechanism,orders_total,orders_served,orders_cancelled,orders_open,makespan,avg_wait,max_wait,late_orders,assignment_latency_avg,assignment_latency_max,messages_total,coordination_messages,coordination_cost,coordination_spend,throughput,gini_workload,jain_workload,tasks_completed
+smoke,central,2,2,0,0,18,13.5,18,0,2,2,30,4,2.0,0.0,0.105,0.071,0.98,4
+smoke,contract_net,2,2,0,0,20,15.5,20,0,2,2,35,9,4.5,0.0,0.095,0.071,0.98,4
+smoke,auction,2,2,0,0,23,16.5,23,1,2,2,35,9,4.5,2.0,0.083,0.278,0.764,4
+dinner_rush,central,7,7,0,0,52,24.29,42,5,10.14,18,113,14,2.0,0.0,0.132,0.081,0.975,16
+dinner_rush,contract_net,7,7,0,0,65,29.86,47,6,14.14,25,123,24,3.43,0.0,0.106,0.125,0.941,16
+dinner_rush,auction,7,7,0,0,68,30.71,50,6,14.86,28,123,24,3.43,48.0,0.101,0.167,0.9,16
+sandy_check,central,4,4,0,0,30,16,22,0,4,9,60,8,2.0,0.0,0.129,0.167,0.9,7
+sandy_check,contract_net,4,4,0,0,34,18,26,1,5,11,67,15,3.75,0.0,0.114,0.167,0.9,7
+sandy_check,auction,4,4,0,0,30,17.25,22,0,4.75,9,67,15,3.75,10.0,0.129,0.071,0.98,7
+stress_rush,central,12,12,0,0,93,44.75,77,9,30.42,64,196,24,2.0,0.0,0.128,0.125,0.941,28
+stress_rush,contract_net,12,12,0,0,108,55.08,92,11,38.67,77,214,42,3.5,0.0,0.11,0.082,0.974,28
+stress_rush,auction,12,12,0,0,107,56.17,91,11,39.42,78,211,39,3.25,146.0,0.111,0.082,0.974,28

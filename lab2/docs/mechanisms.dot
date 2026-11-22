@@ -1,0 +1,45 @@
+digraph mechanisms {
+    rankdir=TB;
+    fontname="Droid Sans";
+    fontsize=11;
+    node [fontname="Droid Sans", fontsize=10, shape=box, style="rounded,filled", fillcolor="#f7f7f7", color="#444444"];
+    edge [fontname="Droid Sans", fontsize=9, color="#333333"];
+
+    subgraph cluster_central {
+        label="central — центральное назначение";
+        style="rounded";
+        color="#666666";
+        c1 [label="Новый заказ", fillcolor="#e8eef7"];
+        c2 [label="Krabs: выбор по приоритету\nи загрузке повара"];
+        c3 [label="Krabs → повар: REQUEST cook_order"];
+        c4 [label="повар → Krabs: AGREE / REFUSE", fillcolor="#e8eef7"];
+        c5 [label="Назначение зафиксировано\n(≈1–2 сообщения)"];
+        c1 -> c2 -> c3 -> c4 -> c5;
+    }
+
+    subgraph cluster_contract {
+        label="contract_net — контрактная сеть";
+        style="rounded";
+        color="#666666";
+        n1 [label="Новый заказ", fillcolor="#eef7e8"];
+        n2 [label="Krabs → все повара: CFP cook_order"];
+        n3 [label="повара → Krabs: PROPOSE\nscore = 10/skill − 0.25·load"];
+        n4 [label="Krabs: argmax score", fillcolor="#eef7e8"];
+        n5 [label="Krabs → победителю: ACCEPT\nKrabs → остальным: REFUSE", fillcolor="#eef7e8"];
+        n6 [label="Назначение зафиксировано\n(≈ 1 + 2·n поваров)"];
+        n1 -> n2 -> n3 -> n4 -> n5 -> n6;
+    }
+
+    subgraph cluster_auction {
+        label="auction — аукцион Викри";
+        style="rounded";
+        color="#666666";
+        a1 [label="Новый заказ", fillcolor="#f7e8e8"];
+        a2 [label="Krabs → все повара: CFP cook_order"];
+        a3 [label="повара → Krabs: PROPOSE\nprice = 1 + load"];
+        a4 [label="Krabs: argmin price\nпобедитель получает платёж\n= цене второго места", fillcolor="#f7e8e8"];
+        a5 [label="Krabs → победителю: ACCEPT\nKrabs → остальным: REFUSE", fillcolor="#f7e8e8"];
+        a6 [label="Назначение зафиксировано\n(≈ 1 + 2·n поваров)"];
+        a1 -> a2 -> a3 -> a4 -> a5 -> a6;
+    }
+}

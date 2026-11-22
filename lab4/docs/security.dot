@@ -1,0 +1,60 @@
+digraph security_layer {
+    rankdir=TB;
+    fontname="Droid Sans";
+    fontsize=11;
+    nodesep=0.35;
+    ranksep=0.42;
+    node [fontname="Droid Sans", fontsize=10, shape=box, style="rounded,filled", fillcolor="#f7f7f7", color="#444"];
+    edge [fontname="Droid Sans", fontsize=9, color="#333"];
+
+    subgraph cluster_agents {
+        label="Агенты";
+        fontname="Droid Sans";
+        fontsize=10;
+        color="#c9c9c9";
+        style="rounded";
+        cook_a [label="SpongeBob\n(повар)", fillcolor="#e8f0fe"];
+        cook_b [label="Patrick\n(повар)", fillcolor="#e8f0fe"];
+        sandy [label="Sandy\n(инструмент)", fillcolor="#e8f0fe"];
+        krabs [label="Krabs\n(диспетчер, аудит)", fillcolor="#e8f0fe"];
+        plankton [label="Plankton\n(недоверенный)", fillcolor="#fce8e6"];
+    }
+
+    keyring [label="KeyRing: HMAC-SHA256, nonce\nканонический payload", fillcolor="#f3e8fd"];
+
+    guards [label="Цепочка из 7 ограничений\n1 authentication → 2 provenance → 3 authorization\n4 integrity → 5 replay → 6 consistency → 7 cycle", fillcolor="#e6f4ea"];
+
+    verdict [label="Verdict: allow / deny\nотказ → security_blocked", fillcolor="#fff4e5"];
+
+    bus [label="MessageBus\nhistory / trace", fillcolor="#e8f0fe"];
+    monitor [label="SecurityMonitor\nсчётчики и метрики", fillcolor="#fff4e5"];
+
+    subgraph cluster_domain {
+        label="Домен и восстановление";
+        fontname="Droid Sans";
+        fontsize=10;
+        color="#c9c9c9";
+        style="rounded";
+        kitchen [label="KitchenEnvironment\nзаказы, станции, тик", fillcolor="#e8f0fe"];
+        recovery [label="Аудит завершения → карантин → переназначение\nистечение лизинга станции\nаварийный ремонт инструмента (fallback_repair)", fillcolor="#f3e8fd"];
+    }
+
+    attacks [label="Каталог атак (8): forgery, tampering, replay, goal_substitution,\ncyclic_delegation, contradictory, instruction_injection, tool_unavailable", fillcolor="#fce8e6"];
+
+    { rank=same; bus; monitor; }
+
+    cook_a -> keyring;
+    cook_b -> keyring;
+    sandy -> keyring;
+    krabs -> keyring;
+    plankton -> keyring;
+
+    keyring -> guards -> verdict;
+    verdict -> bus [label="allow"];
+    verdict -> monitor [label="deny"];
+    bus -> kitchen;
+    kitchen -> recovery [label="отказ"];
+    recovery -> kitchen [label="повторная работа", style=dashed];
+
+    attacks -> keyring [label="инъекция", style=dashed, color="#b3261e"];
+}

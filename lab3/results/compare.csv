@@ -1,0 +1,13 @@
+scenario,mechanism,conflict,orders_total,orders_served,orders_cancelled,orders_open,makespan,avg_wait,max_wait,late_orders,assignment_latency_avg,assignment_latency_max,messages_total,coordination_messages,coordination_cost,coordination_spend,conflict_messages,conflict_events,contention_ticks,negotiation_rounds,agreements,yields,sanctions,station_wait_avg,station_wait_max,reputation_mean,throughput,gini_workload,jain_workload,tasks_completed
+station_rush,central,fcfs,10,10,0,0,91,13.5,19,0,2,2,134,20,2.0,0.0,0,5,5,0,0,0,0,1.19,4,1.14,0.109,0.125,0.941,16
+station_rush,central,negotiation,10,10,0,0,93,15.6,21,0,2,2,154,20,2.0,0.0,20,5,15,5,1,1,4,2.5,7,0.965,0.106,0.125,0.941,16
+station_rush,central,arbitration,10,10,0,0,91,13.8,19,0,2,2,134,20,2.0,0.0,0,5,5,0,0,0,0,1.38,5,1.14,0.109,0.125,0.941,16
+dinner_rush,central,fcfs,7,7,0,0,52,24.29,42,5,10.14,18,113,14,2.0,0.0,0,0,0,0,0,0,0,0.19,3,0.945,0.132,0.081,0.975,16
+dinner_rush,central,negotiation,7,7,0,0,52,24.29,42,5,10.14,18,113,14,2.0,0.0,0,0,0,0,0,0,0,0.19,3,0.945,0.132,0.081,0.975,16
+dinner_rush,central,arbitration,7,7,0,0,52,24.29,42,5,10.14,18,113,14,2.0,0.0,0,0,0,0,0,0,0,0.19,3,0.945,0.132,0.081,0.975,16
+stress_rush,central,fcfs,12,12,0,0,93,44.75,77,9,30.42,64,196,24,2.0,0.0,0,0,0,0,0,0,0,0.14,2,0.9,0.128,0.125,0.941,28
+stress_rush,central,negotiation,12,12,0,0,93,44.75,77,9,30.42,64,196,24,2.0,0.0,0,0,0,0,0,0,0,0.14,2,0.9,0.128,0.125,0.941,28
+stress_rush,central,arbitration,12,12,0,0,93,44.75,77,9,30.42,64,196,24,2.0,0.0,0,0,0,0,0,0,0,0.14,2,0.9,0.128,0.125,0.941,28
+sandy_check,central,fcfs,4,4,0,0,30,16,22,0,4,9,60,8,2.0,0.0,0,0,0,0,0,0,0,0.71,5,1.05,0.129,0.167,0.9,7
+sandy_check,central,negotiation,4,4,0,0,30,16,22,0,4,9,60,8,2.0,0.0,0,0,0,0,0,0,0,0.71,5,1.05,0.129,0.167,0.9,7
+sandy_check,central,arbitration,4,4,0,0,30,16,22,0,4,9,60,8,2.0,0.0,0,0,0,0,0,0,0,0.71,5,1.05,0.129,0.167,0.9,7

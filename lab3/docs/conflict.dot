@@ -1,0 +1,37 @@
+digraph conflict_protocol {
+    rankdir=TB;
+    fontname="Droid Sans";
+    fontsize=11;
+    node [fontname="Droid Sans", fontsize=10, shape=box, style="rounded,filled", fillcolor="#f7f7f7", color="#444"];
+    edge [fontname="Droid Sans", fontsize=9, color="#333"];
+
+    start [label="Повар A и повар B\nзапрашивают станцию одного типа\n(REQUEST station, один тик)", fillcolor="#e8f0fe"];
+    queue [label="Krabs: очередь заявок,\nсчётчик конкуренции ≥ 2\n(conflict_detected)", fillcolor="#fff4e5"];
+    cfp [label="Krabs рассылает CFP\n(station_conflict, order_id)", fillcolor="#e8f0fe"];
+    pos [label="Каждый претендент отвечает\nPROPOSE claim_response\n{can_yield, slack, greedy}", fillcolor="#e8f0fe"];
+    rank [label="Krabs ранжирует заявки по силе:\nscore = 2·priority + 2/(1+slack)\n+ 0.5·reputation + 0.5·credit − 0.25·load", fillcolor="#f3e8fd"];
+
+    yield [label="Проигравший готов уступить\n(can_yield = true)", fillcolor="#e6f4ea"];
+    refuse [label="Отказ при slack ≥ YIELD_SLACK\n(нечестная позиция)", fillcolor="#fce8e6"];
+    okref [label="Легитимный отказ\n(slack < YIELD_SLACK)", fillcolor="#f7f7f7"];
+
+    agree [label="Соглашение: уступка\nкредит +1 (cap 2), репутация +0.05\n(agreement, yield)", fillcolor="#e6f4ea"];
+    sanc [label="Санкция: репутация −0.1\n(sanctioned)", fillcolor="#fce8e6"];
+    arb [label="Арбитраж по силе заявки\n(arbitration / timeout / tie)", fillcolor="#fff4e5"];
+
+    grant [label="Победитель получает станцию\nAGREE station_granted;\nпроигравший остаётся в очереди", fillcolor="#e8f0fe"];
+
+    start -> queue;
+    queue -> cfp;
+    cfp -> pos;
+    pos -> rank;
+    rank -> yield;
+    rank -> refuse;
+    rank -> okref;
+    yield -> agree;
+    refuse -> sanc;
+    sanc -> arb;
+    okref -> arb;
+    agree -> grant;
+    arb -> grant;
+}
